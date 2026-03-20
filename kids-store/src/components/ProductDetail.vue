@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { useCart } from "../store/cart"
 
 const route = useRoute()
 const router = useRouter()
+const { addToCart } = useCart()
 
 const product = ref<any>(null)
 
@@ -17,14 +19,23 @@ onMounted(async () => {
 
 <template>
   <div class="min-h-screen bg-gray-100 p-6" v-if="product">
-    
-    <!-- Back Button -->
-    <button
-      @click="router.back()"
-      class="mb-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-    >
-      ← Back
-    </button>
+
+    <!-- Buttons -->
+    <div class="mb-6">
+      <button
+        @click="router.back()"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      >
+        ← Back
+      </button>
+
+      <button
+        @click="addToCart(product)"
+        class="ml-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        Add to Cart
+      </button>
+    </div>
 
     <!-- Product Card -->
     <div class="bg-white p-6 rounded-xl shadow max-w-xl mx-auto">
