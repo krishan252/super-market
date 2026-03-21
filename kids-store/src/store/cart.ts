@@ -7,8 +7,13 @@ export function useCart() {
     cart.value.push(product)
   }
 
+  function removeFromCart(id: number) {
+    cart.value = cart.value.filter((item) => item.id !== id)
+  }
+
   return {
     cart,
     addToCart,
+    removeFromCart,
   }
 }
