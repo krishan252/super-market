@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useCart } from "../store/cart"
 
-const { cart, removeFromCart } = useCart()
+const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useCart()
 
 const total = () => {
-  return cart.value.reduce((sum, item) => sum + item.price, 0)
+  return cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
 }
 </script>
 
@@ -25,18 +25,35 @@ const total = () => {
         <div>
           <h2 class="font-bold text-lg">{{ item.title }}</h2>
           <p class="text-gray-600">${{ item.price }}</p>
+          <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
         </div>
 
-        <button
-          @click="removeFromCart(item.id)"
-          class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-        >
-          Remove
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            @click="decreaseQuantity(item.id)"
+            class="bg-gray-300 px-3 py-1 rounded"
+          >
+            -
+          </button>
+
+          <button
+            @click="increaseQuantity(item.id)"
+            class="bg-gray-300 px-3 py-1 rounded"
+          >
+            +
+          </button>
+
+          <button
+            @click="removeFromCart(item.id)"
+            class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          >
+            Remove
+          </button>
+        </div>
       </div>
 
       <div class="text-right font-bold text-xl mt-6">
-        Total: ${{ total() }}
+        Total: ${{ total().toFixed(2) }}
       </div>
     </div>
   </div>
