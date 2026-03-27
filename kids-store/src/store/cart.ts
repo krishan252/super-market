@@ -1,41 +1,33 @@
 import { ref } from "vue"
 
-const cart = ref<any[]>([])
+export const cart = ref<any[]>([])
 
-export function useCart() {
-  function addToCart(product: any) {
-    const existing = cart.value.find((item) => item.id === product.id)
+export function addToCart(product: any) {
+  const existing = cart.value.find(item => item.id === product.id)
 
-    if (existing) {
-      existing.quantity += 1
-    } else {
-      cart.value.push({ ...product, quantity: 1 })
-    }
+  if (existing) {
+    existing.quantity++
+  } else {
+    cart.value.push({ ...product, quantity: 1 })
   }
+}
 
-  function removeFromCart(id: number) {
-    cart.value = cart.value.filter((item) => item.id !== id)
-  }
+export function removeFromCart(id: number) {
+  cart.value = cart.value.filter(item => item.id !== id)
+}
 
-  function increaseQuantity(id: number) {
-    const item = cart.value.find((item) => item.id === id)
-    if (item) item.quantity += 1
-  }
+export function increaseQuantity(id: number) {
+  const item = cart.value.find(item => item.id === id)
+  if (item) item.quantity++
+}
 
-  function decreaseQuantity(id: number) {
-    const item = cart.value.find((item) => item.id === id)
-    if (item && item.quantity > 1) {
-      item.quantity -= 1
-    } else {
-      removeFromCart(id)
-    }
-  }
+export function decreaseQuantity(id: number) {
+  const item = cart.value.find(item => item.id === id)
+  if (!item) return
 
-  return {
-    cart,
-    addToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
+  if (item.quantity > 1) {
+    item.quantity--
+  } else {
+    removeFromCart(id)
   }
 }

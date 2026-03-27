@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { useCart } from "../store/cart"
-import { useRouter } from "vue-router"
+import { computed } from "vue"
+import { cart, removeFromCart, increaseQuantity, decreaseQuantity } from "../store/cart"
 
-const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useCart()
-const router = useRouter()
-
-const total = () => {
-  return cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
-}
+const total = computed(() =>
+  cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+)
 </script>
 
 <template>
@@ -15,13 +12,6 @@ const total = () => {
     <div class="max-w-5xl mx-auto">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Your Cart 🛒</h1>
-
-        <button
-          @click="router.push('/')"
-          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Back to Shop
-        </button>
       </div>
 
       <div
@@ -68,7 +58,7 @@ const total = () => {
         </div>
 
         <div class="text-right font-bold text-2xl mt-6">
-          Total: ${{ total().toFixed(2) }}
+          Total: ${{ total.toFixed(2) }}
         </div>
       </div>
     </div>

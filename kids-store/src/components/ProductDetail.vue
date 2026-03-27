@@ -1,60 +1,56 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { useCart } from "../store/cart"
+import { ref, onMounted } from "vue"
+import { addToCart } from "../store/cart"
 
 const route = useRoute()
 const router = useRouter()
-const { addToCart } = useCart()
 
 const product = ref<any>(null)
 
 onMounted(async () => {
   const res = await fetch(`https://dummyjson.com/products/${route.params.id}`)
-  const data = await res.json()
-  product.value = data
+  product.value = await res.json()
 })
+
+function goBack() {
+  router.back()
+}
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100 p-6 dark:bg-gray-900 dark:text-white" v-if="product">
-    <div class="mb-6">
-      <button
-        @click="router.back()"
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-      >
-        ← Back
-      </button>
+  <div v-if="product" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
 
-      <button
-        @click="addToCart(product)"
-        class="ml-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-      >
-        Add to Cart
-      </button>
-    </div>
+    <button
+      @click="goBack"
+      class="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+    >
+      ← Back
+    </button>
 
-    <div class="bg-white p-6 rounded-xl shadow max-w-xl mx-auto dark:bg-gray-800">
-      <img
-        :src="product.thumbnail"
-        class="w-full h-64 object-cover rounded-lg mb-4"
-      />
+    <img
+      :src="product.thumbnail"
+      class="w-full h-64 object-contain mb-4"
+    />
 
-      <h1 class="text-2xl font-bold mb-3">
-        {{ product.title }}
-      </h1>
+    <h2 class="text-2xl font-bold mb-2 dark:text-white">
+      {{ product.title }}
+    </h2>
 
-      <p class="mb-2">
-        <strong>Price:</strong> ${{ product.price }}
-      </p>
+    <p class="text-lg text-blue-600 font-semibold mb-2">
+      ${{ product.price }}
+    </p>
 
-      <p class="mb-2">
-        <strong>Category:</strong> {{ product.category }}
-      </p>
+    <p class="text-gray-600 dark:text-gray-300 mb-4">
+      {{ product.description }}
+    </p>
 
-      <p class="mb-2 text-gray-700 dark:text-gray-300">
-        <strong>Description:</strong> {{ product.description }}
-      </p>
-    </div>
+    <button
+      @click="addToCart(product)"
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+    >
+      Add to Cart
+    </button>
+
   </div>
 </template>
