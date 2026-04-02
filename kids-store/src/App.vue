@@ -24,7 +24,7 @@ watch(darkMode, (val) => {
 })
 
 const cartCount = computed(() =>
-  cart.value.reduce((total, item) => total + item.quantity, 0)
+  cart.reduce((total, item) => total + (item?.quantity ?? 1), 0)
 )
 
 function logout() {
@@ -36,10 +36,8 @@ function logout() {
 
 <template>
   <div class="min-h-screen bg-gray-100 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 transition-all duration-300">
-    <!-- Navbar -->
     <header class="sticky top-0 z-50 border-b border-white/20 bg-white/80 backdrop-blur-md shadow-lg dark:bg-gray-900/80 dark:border-gray-700/50">
       <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <!-- Left -->
         <div class="flex items-center gap-3">
           <div
             @click="router.push('/')"
@@ -54,9 +52,7 @@ function logout() {
           </div>
         </div>
 
-        <!-- Right -->
         <div class="flex items-center gap-3">
-          <!-- Dark mode -->
           <button
             @click="toggleDark"
             class="h-11 w-11 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xl flex items-center justify-center transition shadow-sm"
@@ -65,7 +61,6 @@ function logout() {
             {{ darkMode ? "☀️" : "🌙" }}
           </button>
 
-          <!-- User -->
           <template v-if="!user">
             <button
               @click="router.push('/login')"
@@ -91,7 +86,6 @@ function logout() {
             </button>
           </template>
 
-          <!-- Cart -->
           <button
             @click="router.push('/cart')"
             class="relative px-5 py-2.5 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow-md"
@@ -108,7 +102,6 @@ function logout() {
       </div>
     </header>
 
-    <!-- Page -->
     <main class="p-6">
       <router-view />
     </main>
